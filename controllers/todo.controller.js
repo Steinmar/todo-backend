@@ -37,14 +37,11 @@ exports.createTodo = async (req, res, next) => {
 };
 
 exports.updateTodo = async (req, res, next) => {
-    // Id is necessary for the update
     if (!req.body._id) {
-        return res.status(400).json({status: 400., message: 'Id must be present'})
+        return res.status(400).json({status: 400., message: '_id must be present'})
     }
-    const id = req.body._id;
-    console.log(req.body);
     const todo = {
-        id,
+        id: req.body._id,
         title: req.body.title ? req.body.title : null,
         description: req.body.description ? req.body.description : null,
         status: req.body.status ? req.body.status : null
@@ -54,6 +51,7 @@ exports.updateTodo = async (req, res, next) => {
         const updatedTodo = await TodoService.updateTodo(todo);
         return res.status(200).json({status: 200, data: updatedTodo, message: 'Succesfully Updated Todo'});
     } catch (e) {
+        console.log('error');
         return res.status(400).json({status: 400., message: e.message});
     }
 };

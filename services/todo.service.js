@@ -11,7 +11,7 @@ exports.getTodos = async (query, page, limit) => {
     // Try Catch the awaited promise to handle the error
     try {
         const todos = await ToDo.paginate(query, options);
-        // Return the todod list that was retured by the mongoose promise
+        // Return the todos list that was retured by the mongoose promise
         return todos;
     } catch (e) {
         // return a Error message describing the reason
@@ -40,10 +40,11 @@ exports.createTodo = async (todo) => {
 
 exports.updateTodo = async (todo) => {
     const id = todo.id;
+    let oldTodo;
 
     try{
         //Find the old Todo Object by the Id
-        const oldTodo = await ToDo.findById(id);
+        oldTodo = await ToDo.findById(id);
     }catch(e){
         throw Error('Error occured while Finding the Todo')
     }
@@ -52,7 +53,6 @@ exports.updateTodo = async (todo) => {
     if(!oldTodo){
         return false;
     }
-    console.log(oldTodo);
 
     //Edit the Todo Object
     oldTodo.title = todo.title;
