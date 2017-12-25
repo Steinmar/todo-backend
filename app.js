@@ -8,6 +8,7 @@ const bluebird = require('bluebird');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
+const api = require('./routes/api.route');
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
