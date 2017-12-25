@@ -1,6 +1,6 @@
 const TodoService = require('../services/todo.service');
 
-exports.getTodos = async (req, res, next) => {
+exports.getTodos = async (req, res) => {
     const page = req.query.page ? req.query.page : 1;
     const limit = req.query.limit ? req.query.limit : 10;
 
@@ -29,11 +29,11 @@ exports.createTodo = async (req, res) => {
 };
 
 exports.updateTodo = async (req, res) => {
-    if (!req.body._id) {
+    if (!req.body.id) {
         return res.status(400).json({status: 400., message: '_id must be present'})
     }
     const todo = {
-        id: req.body._id,
+        id: req.body.id,
         title: req.body.title ? req.body.title : null,
         description: req.body.description ? req.body.description : null,
         status: req.body.status ? req.body.status : null
