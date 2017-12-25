@@ -1,5 +1,5 @@
 // Accessing the Service that we just created
-const TodoService = require('../services/todos.service');
+const TodoService = require('../services/todo.service');
 
 // Async Controller function to get the To do List
 exports.getTodos = async (req, res, next) => {

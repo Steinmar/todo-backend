@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ToDoController = require('../../controllers/todos.controller');
+const ToDoController = require('../../controllers/todo.controller');
 
 // Map each API to the Controller FUnctions
 router.get('/', ToDoController.getTodos);
