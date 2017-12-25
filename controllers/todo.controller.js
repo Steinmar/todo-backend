@@ -9,7 +9,6 @@ exports.getTodos = async (req, res) => {
         return res.json({status: 200, data: todos});
     } catch (e) {
         return res.status(400).json({status: 400, message: e.message});
-
     }
 };
 
