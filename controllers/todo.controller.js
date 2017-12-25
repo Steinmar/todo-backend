@@ -30,7 +30,7 @@ exports.createTodo = async (req, res) => {
 
 exports.updateTodo = async (req, res) => {
     if (!req.body.id) {
-        return res.status(400).json({status: 400., message: '_id must be present'})
+        return res.status(400).json({status: 400., message: 'id must be present'})
     }
     const todo = {
         id: req.body.id,
