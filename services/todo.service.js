@@ -1,26 +1,29 @@
-// Gettign the Newly created Mongoose Model we just created
 const ToDo = require('../models/todo.model');
 
-// Async function to get the To do List
 exports.getTodos = async (query, page, limit) => {
-    // Options setup for the mongoose paginate
     const options = {
         page,
         limit
     };
-    // Try Catch the awaited promise to handle the error
     try {
         const todos = await ToDo.paginate(query, options);
-        // Return the todos list that was retured by the mongoose promise
-        return todos;
+        const resultList = todos.docs.map(res => {
+            const item = {...res._doc};
+            return {
+                id: item._id,
+                description: item.description,
+                status: item.status,
+                title: item.title
+            };
+        });
+        const resultTodos = {...todos, docs: resultList};
+        return resultTodos;
     } catch (e) {
-        // return a Error message describing the reason
         throw Error('Error while Paginating Todos')
     }
 };
 
 exports.createTodo = async (todo) => {
-    // Creating a new Mongoose Object by using the new keyword
     const newTodo = new ToDo({
         title: todo.title,
         description: todo.description,
@@ -29,12 +32,9 @@ exports.createTodo = async (todo) => {
     });
 
     try {
-        // Saving the Todo
-        const savedTodo = await newTodo.save();
-        return savedTodo;
-    }catch(e){
-        // return a Error message describing the reason
-        throw Error('Error while Creating Todo')
+        return await newTodo.save();
+    } catch (e) {
+        throw Error('Error while Creating Todo');
     }
 };
 
@@ -42,42 +42,37 @@ exports.updateTodo = async (todo) => {
     const id = todo.id;
     let oldTodo;
 
-    try{
-        //Find the old Todo Object by the Id
+    try {
         oldTodo = await ToDo.findById(id);
-    }catch(e){
+    } catch (e) {
         throw Error('Error occured while Finding the Todo')
     }
 
-    // If no old Todo Object exists return false
-    if(!oldTodo){
+    if (!oldTodo) {
         return false;
     }
 
-    //Edit the Todo Object
     oldTodo.title = todo.title;
     oldTodo.description = todo.description;
     oldTodo.status = todo.status;
     console.log(oldTodo);
 
-    try{
-        const savedTodo = await oldTodo.save();
-        return savedTodo;
-    }catch(e){
+    try {
+        return await oldTodo.save();
+    } catch (e) {
         throw Error('And Error occured while updating the Todo');
     }
 };
 
 exports.deleteTodo = async (id) => {
-    // Delete the Todo
-    try{
+    try {
         const deleted = await ToDo.remove({_id: id});
 
-        if(deleted.result.n === 0){
+        if (deleted.result.n === 0) {
             throw Error('Todo Could not be deleted');
         }
         return deleted;
-    }catch(e){
+    } catch (e) {
         throw Error('Error Occured while Deleting the Todo');
     }
 };

@@ -1,25 +1,19 @@
-// Accessing the Service that we just created
 const TodoService = require('../services/todo.service');
 
-// Async Controller function to get the To do List
 exports.getTodos = async (req, res, next) => {
-    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
     const page = req.query.page ? req.query.page : 1;
     const limit = req.query.limit ? req.query.limit : 10;
 
     try {
         const todos = await TodoService.getTodos({}, page, limit);
-        // Return the todos list with the appropriate HTTP Status Code and Message.
         return res.status(200).json({status: 200, data: todos, message: 'Succesfully Todos Recieved'});
     } catch (e) {
-        //Return an Error Response Message with Code and the Error Message.
         return res.status(400).json({status: 400, message: e.message});
 
     }
 };
 
-exports.createTodo = async (req, res, next) => {
-    // Req.Body contains the form submit values.
+exports.createTodo = async (req, res) => {
     const todo = {
         title: req.body.title,
         description: req.body.description,
@@ -27,16 +21,14 @@ exports.createTodo = async (req, res, next) => {
     };
 
     try {
-        // Calling the Service function with the new object from the Request Body
         const createdTodo = await TodoService.createTodo(todo);
         return res.status(201).json({status: 201, data: createdTodo, message: 'Succesfully Created ToDo'});
     } catch (e) {
-        //Return an Error Response Message with Code and the Error Message.
         return res.status(400).json({status: 400, message: 'Todo Creation was Unsuccesfull'})
     }
 };
 
-exports.updateTodo = async (req, res, next) => {
+exports.updateTodo = async (req, res) => {
     if (!req.body._id) {
         return res.status(400).json({status: 400., message: '_id must be present'})
     }
@@ -56,7 +48,7 @@ exports.updateTodo = async (req, res, next) => {
     }
 };
 
-exports.removeTodo = async (req, res, next) => {
+exports.removeTodo = async (req, res) => {
     const id = req.params.id;
 
     try {
