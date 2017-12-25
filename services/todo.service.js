@@ -19,7 +19,7 @@ exports.getTodos = async (query, page, limit) => {
         const resultTodos = {...todos, docs: resultList};
         return resultTodos;
     } catch (e) {
-        throw Error('Error while Paginating Todos')
+        throw Error('Error while paginating todos')
     }
 };
 
@@ -34,7 +34,7 @@ exports.createTodo = async (todo) => {
     try {
         return await newTodo.save();
     } catch (e) {
-        throw Error('Error while Creating Todo');
+        throw Error('Error while creating todo');
     }
 };
 
@@ -45,22 +45,20 @@ exports.updateTodo = async (todo) => {
     try {
         oldTodo = await ToDo.findById(id);
     } catch (e) {
-        throw Error('Error occured while Finding the Todo')
+        throw Error('Error occured while finding the todo')
     }
 
     if (!oldTodo) {
         return false;
     }
-
     oldTodo.title = todo.title;
     oldTodo.description = todo.description;
     oldTodo.status = todo.status;
-    console.log(oldTodo);
 
     try {
         return await oldTodo.save();
     } catch (e) {
-        throw Error('And Error occured while updating the Todo');
+        throw Error('And Error occurred while updating the todo');
     }
 };
 
@@ -69,10 +67,10 @@ exports.deleteTodo = async (id) => {
         const deleted = await ToDo.remove({_id: id});
 
         if (deleted.result.n === 0) {
-            throw Error('Todo Could not be deleted');
+            throw Error('Todo could not be deleted');
         }
         return deleted;
     } catch (e) {
-        throw Error('Error Occured while Deleting the Todo');
+        throw Error('Error occurred while deleting the todo');
     }
 };

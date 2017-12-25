@@ -6,7 +6,7 @@ exports.getTodos = async (req, res) => {
 
     try {
         const todos = await TodoService.getTodos({}, page, limit);
-        return res.status(200).json({status: 200, data: todos, message: 'Succesfully Todos Recieved'});
+        return res.json({status: 200, data: todos});
     } catch (e) {
         return res.status(400).json({status: 400, message: e.message});
 
@@ -22,15 +22,15 @@ exports.createTodo = async (req, res) => {
 
     try {
         const createdTodo = await TodoService.createTodo(todo);
-        return res.status(201).json({status: 201, data: createdTodo, message: 'Succesfully Created ToDo'});
+        return res.status(201).json({status: 201, data: createdTodo});
     } catch (e) {
-        return res.status(400).json({status: 400, message: 'Todo Creation was Unsuccesfull'})
+        return res.status(400).json({status: 400, message: 'Todo Creation was unsuccessful'})
     }
 };
 
 exports.updateTodo = async (req, res) => {
     if (!req.body.id) {
-        return res.status(400).json({status: 400., message: 'id must be present'})
+        return res.status(400).json({status: 400., message: 'id must should be present'})
     }
     const todo = {
         id: req.body.id,
@@ -41,9 +41,8 @@ exports.updateTodo = async (req, res) => {
 
     try {
         const updatedTodo = await TodoService.updateTodo(todo);
-        return res.status(200).json({status: 200, data: updatedTodo, message: 'Succesfully Updated Todo'});
+        return res.json({status: 200, data: updatedTodo});
     } catch (e) {
-        console.log('error');
         return res.status(400).json({status: 400., message: e.message});
     }
 };
@@ -53,7 +52,7 @@ exports.removeTodo = async (req, res) => {
 
     try {
         const deleted = await TodoService.deleteTodo(id);
-        return res.status(204).json({status: 204, message: 'Succesfully Todo Deleted'});
+        return res.status(204).json({status: 204});
     } catch (e) {
         return res.status(400).json({status: 400, message: e.message});
     }
